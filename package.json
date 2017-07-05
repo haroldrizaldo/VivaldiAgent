@@ -1,0 +1,14 @@
+{
+  "name": "vivaldiassistant",
+  "version": "1.0.0",
+  "description": "Vivaldi Agent",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Harold Rizaldo",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4"
+  }
+}
