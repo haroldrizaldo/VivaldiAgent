@@ -65,12 +65,42 @@ restService.post('/slack-test', function(req, res) {
         }]
     }
     return res.json({
-        speech: "speech",
-        displayText: "speech",
-        source: 'webhook-echo-sample',
-        data: {
-            "slack": slack_message
+        fulfillment: {
+      speech: "",
+      messages: [
+        {
+          "type": "list_card",
+          "platform": "google",
+          "title": "Available Units",
+          "items": [
+            {
+              "optionInfo": {
+                "key": "VRC1RE36002",
+                "synonyms": []
+              },
+              "title": "[PRJ VRC] [BLDG 1] [TYPE RE] [FLR 36] [UNIT 002]",
+              "image": {
+                "url": "http://cdn4.zipmatch.com/blog/wp-content/uploads/2015/07/bi-level-condo.jpg"
+              }
+            },
+            {
+              "optionInfo": {
+                "key": "VRC1RE36003",
+                "synonyms": []
+              },
+              "title": "[PRJ VRC] [BLDG 1] [TYPE RE] [FLR 36] [UNIT 003]",
+              "image": {
+                "url": "http://cdn.decoist.com/wp-content/uploads/2014/05/Cool-living-room-with-wall-mounted-entertainment-unit.jpg"
+              }
+            }
+          ]
+        },
+        {
+          "type": 0,
+          "speech": ""
         }
+      ]
+    }
     });
 });
 
