@@ -65,7 +65,6 @@ restService.post('/slack-test', function(req, res) {
         }]
     }
     return res.json({
-        fulfillment: {
       speech: "",
       messages: [
         {
@@ -100,7 +99,6 @@ restService.post('/slack-test', function(req, res) {
           "speech": ""
         }
       ]
-    }
     });
 });
 
