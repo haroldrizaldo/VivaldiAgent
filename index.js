@@ -65,7 +65,7 @@ restService.post('/slack-test', function(req, res) {
         }]
     }
     return res.json({
-      speech: "",
+      speech: "List of Units",
       messages: [
         {
           "type": "list_card",
