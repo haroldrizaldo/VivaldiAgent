@@ -9,6 +9,8 @@
   "author": "Harold Rizaldo",
   "dependencies": {
     "body-parser": "^1.15.0",
-    "express": "^4.13.4"
-  }
+    "express": "^4.13.4",
+    "mssql": "^4.0.4",
+    "zpad": "^0.5.0"
+	}
 }
