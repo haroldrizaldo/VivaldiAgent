@@ -77,7 +77,7 @@ restService.post('/slack-test', function(req, res) {
                 "key": "VRC1RE36002",
                 "synonyms": []
               },
-              "title": "[PRJ VRC] [BLDG 1] [TYPE RE] [FLR 36] [UNIT 002]",
+              "title": "VRC1RE36002",
               "image": {
                 "url": "http://cdn4.zipmatch.com/blog/wp-content/uploads/2015/07/bi-level-condo.jpg"
               }
@@ -87,7 +87,7 @@ restService.post('/slack-test', function(req, res) {
                 "key": "VRC1RE36003",
                 "synonyms": []
               },
-              "title": "[PRJ VRC] [BLDG 1] [TYPE RE] [FLR 36] [UNIT 003]",
+              "title": "VRC1RE36003",
               "image": {
                 "url": "http://cdn.decoist.com/wp-content/uploads/2014/05/Cool-living-room-with-wall-mounted-entertainment-unit.jpg"
               }
