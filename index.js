@@ -2,6 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const sql = require('mssql')
 
 const restService = express();
 
@@ -22,84 +23,85 @@ restService.post('/echo', function(req, res) {
 
 restService.post('/slack-test', function(req, res) {
 
-    var slack_message = {
-        "text": "Details of JIRA board for Browse and Commerce",
-        "attachments": [{
-            "title": "JIRA Board",
-            "title_link": "http://www.google.com",
-            "color": "#36a64f",
+	var res1 = {};
+	//For padding
+	var zpad = require('zpad');
 
-            "fields": [{
-                "title": "Epic Count",
-                "value": "50",
-                "short": "false"
-            }, {
-                "title": "Story Count",
-                "value": "40",
-                "short": "false"
-            }],
+	//Get the parameter values
+	var param1 = zpad(req.body.result.parameters.project, 3);
+	var param2 = zpad(req.body.result.parameters.floor, 2);
+	//var param1 = zpad('12', 2);
 
-            "thumb_url": "https://stiltsoft.com/blog/wp-content/uploads/2016/01/5.jira_.png"
-        }, {
-            "title": "Story status count",
-            "title_link": "http://www.google.com",
-            "color": "#f49e42",
+	//SQL connection
+	const config = {
+		user: 'eurotowers',
+		password: 'd@rnasour123',
+		server: '52.187.78.66',
+		port: "1994",
+		database: 'EREMS_PORTAL_TEST',
+		options: {
+			encrypt: true // Use this if you're on Windows Azure 
+		}
+	}
 
-            "fields": [{
-                "title": "Not started",
-                "value": "50",
-                "short": "false"
-            }, {
-                "title": "Development",
-                "value": "40",
-                "short": "false"
-            }, {
-                "title": "Development",
-                "value": "40",
-                "short": "false"
-            }, {
-                "title": "Development",
-                "value": "40",
-                "short": "false"
-            }]
-        }]
-    }
-    return res.json({
-      speech: "List of Units",
-      messages: [
-        {
-          "type": "list_card",
-          "platform": "google",
-          "title": "Available Units",
-          "items": [
-            {
-              "optionInfo": {
-                "key": "VRC1RE36002",
-                "synonyms": []
-              },
-              "title": "VRC1RE36002",
-              "image": {
-                "url": "http://cdn4.zipmatch.com/blog/wp-content/uploads/2015/07/bi-level-condo.jpg"
-              }
-            },
-            {
-              "optionInfo": {
-                "key": "VRC1RE36003",
-                "synonyms": []
-              },
-              "title": "VRC1RE36003",
-              "image": {
-                "url": "http://cdn.decoist.com/wp-content/uploads/2014/05/Cool-living-room-with-wall-mounted-entertainment-unit.jpg"
-              }
-            }
-          ]
-        },
-        {
-          "type": 0,
-          "speech": ""
-        }
-      ]
-    });
+	// connect to your database
+	sql.connect(config, function (err) {
+
+		if (err) console.log(err);
+
+		// create Request object
+		var request = new sql.Request();
+
+		// query to the database and get the records
+
+		//request.input('projectCode', sql.VarChar(2), param1);
+		request.input('floorID', sql.VarChar(2), param2);
+		
+		request.query('select top 10 ch_unit_id as [key],\'[]\' as [synonyms], rtrim(ch_unit_desc) as ch_unit_desc,mo_lp_with_cwtdisc1=CONVERT(varchar, CAST(mo_lp_with_cwtdisc AS money), 1) From mf_unit_status_details where ch_floor_id=@floorID and ch_proj_code=\'VRC\'', function (err, recordset) {
+			if (err) console.log(err)
+
+			var itemObject = {}
+
+			var len = recordset.recordset.length;
+
+			res1 = {
+				speech: "List of Units",
+				messages: [
+					{
+						"type": "list_card",
+						"platform": "google",
+						"title": "Available Units",
+						"items": [
+						]
+					},
+					{
+						"type": 0,
+						"speech": ""
+					}
+				]
+			};
+
+			for (var i = 0; i < len; i++) {
+				itemObject = {
+					"optionInfo": {
+						"key": recordset.recordset[i].key,
+						"synonyms": []
+					},
+					"title": recordset.recordset[i].key,
+					"image": {
+						"url": "http://cdn4.zipmatch.com/blog/wp-content/uploads/2015/07/bi-level-condo.jpg"
+					}
+				};
+				res1["messages"][0].items[i] = itemObject;
+			}
+			//return res.json(JSON.stringify(res1));
+
+			return res.json(res1);
+			//console.log(JSON.stringify(res1));
+		});
+	});
+	
+
 });
 
 
